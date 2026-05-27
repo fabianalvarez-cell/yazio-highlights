@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Yazio — Friday highlights</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700;900&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --green:#3DBA6F;--green-h:#45d07e;--green-dim:rgba(61,186,111,0.1);--green-b:rgba(61,186,111,0.25);
+  --dark:#0f1a12;--s1:#162019;--s2:#1c2b20;--border:#263b2a;
+  --cream:#FFFEF9;--muted:#7a9b82;--muted2:#4d6b54;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--dark);color:var(--cream);font-family:'Noto Sans',sans-serif;min-height:100vh;display:flex;flex-direction:column}
+nav{display:flex;align-items:center;justify-content:space-between;padding:14px 32px;border-bottom:1px solid var(--border);background:var(--s1)}
+.brand{display:flex;align-items:center;gap:10px}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+.brand-name{font-size:14px;font-weight:900;letter-spacing:-0.2px}
+.brand-name span{color:var(--green)}
+.cw-pill{font-size:11px;font-weight:500;color:var(--green);background:var(--green-dim);border:1px solid var(--green-b);border-radius:20px;padding:3px 11px}
+.page{flex:1;max-width:640px;width:100%;margin:0 auto;padding:40px 24px 56px}
+.hero{margin-bottom:32px}
+.hero h1{font-size:28px;font-weight:900;letter-spacing:-0.6px;line-height:1.12;margin-bottom:8px}
+.hero h1 em{font-style:normal;color:var(--green)}
+.hero p{font-size:13px;color:var(--muted);line-height:1.65}
+
+/* mode toggle */
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:24px}
+.mode{padding:11px 14px;border-radius:10px;border:1px solid var(--border);background:var(--s1);cursor:pointer;text-align:left;transition:all 0.15s}
+.mode:hover{border-color:var(--green-b)}
+.mode.on{border:1.5px solid var(--green);background:var(--green-dim)}
+.mode-title{font-size:13px;font-weight:700;color:var(--cream);display:flex;align-items:center;gap:7px;margin-bottom:3px}
+.mode.on .mode-title{color:var(--green)}
+.mode-desc{font-size:11px;color:var(--muted2)}
+
+/* panels */
+.panel{display:none}.panel.on{display:block}
+
+/* sources */
+.srcs{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px}
+.src{display:flex;align-items:center;gap:6px;background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:5px 11px;font-size:11px;font-weight:500;color:var(--muted)}
+.src .sd{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* scan note */
+.note{background:var(--s2);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:8px;padding:12px 14px;font-size:12px;color:var(--muted);line-height:1.65;margin-bottom:16px}
+.note strong{color:var(--cream)}
+
+/* card */
+.card{background:var(--s1);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px}
+.ch{padding:11px 15px;background:var(--s2);border-bottom:1px solid var(--border);font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;display:flex;align-items:center;gap:7px}
+.ch .cd{width:6px;height:6px;border-radius:50%;background:var(--green)}
+.cb{padding:15px}
+label{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.4px;text-transform:uppercase;margin-bottom:6px;display:block}
+textarea,input,select{width:100%;background:var(--dark);border:1px solid var(--border);border-radius:8px;color:var(--cream);font-family:'Noto Sans',sans-serif;font-size:12.5px;padding:10px 12px;outline:none;transition:border-color .18s;line-height:1.7}
+textarea{resize:vertical;min-height:150px}
+textarea:focus,input:focus,select:focus{border-color:var(--green-b)}
+textarea::placeholder,input::placeholder{color:var(--muted2)}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%237a9b82' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.ir{margin-bottom:12px}
+
+/* button */
+.btn{width:100%;padding:13px;background:var(--green);border:none;border-radius:9px;color:var(--dark);font-family:'Noto Sans',sans-serif;font-size:14px;font-weight:900;cursor:pointer;transition:background .18s,transform .12s;display:flex;align-items:center;justify-content:center;gap:9px}
+.btn:hover:not(:disabled){background:var(--green-h);transform:translateY(-1px)}
+.btn:active:not(:disabled){transform:translateY(0)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.spinner{width:15px;height:15px;border:2.5px solid rgba(15,26,18,.3);border-top-color:var(--dark);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* status */
+.status{display:none;align-items:center;gap:9px;background:var(--s2);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:var(--green);font-weight:500}
+.status.on{display:flex}
+.pdot{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0;animation:pulse 1.2s infinite}
+
+/* output */
+.out{display:none}.out.on{display:block}
+.ot{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--s2);border-bottom:1px solid var(--border)}
+.ol{font-size:11px;font-weight:700;color:var(--muted);display:flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:.5px}
+.ol .od{width:6px;height:6px;border-radius:50%;background:var(--green)}
+.btns{display:flex;gap:6px}
+.sb{background:var(--s1);border:1px solid var(--border);border-radius:7px;color:var(--muted);font-family:'Noto Sans',sans-serif;font-size:12px;font-weight:500;padding:5px 11px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:4px}
+.sb:hover{border-color:var(--green);color:var(--green)}
+.sb.ok{border-color:var(--green);color:var(--green)}
+.ob{padding:18px;font-size:13px;line-height:1.9;color:var(--cream);white-space:pre-wrap;word-break:break-word}
+
+/* error */
+.err{display:none;background:#1e0f0f;border:1px solid rgba(192,68,68,.3);border-radius:8px;padding:10px 14px;font-size:12px;color:#e07070;margin-top:10px}
+.err.on{display:block}
+
+/* footer */
+footer{padding:14px 32px;border-top:1px solid var(--border);display:flex;justify-content:space-between}
+footer p{font-size:11px;color:var(--muted2)}
+@media(max-width:500px){nav{padding:12px 16px}.page{padding:28px 16px 40px}.hero h1{font-size:22px}.row2,.modes{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand"><div class="dot"></div><div class="brand-name">Yazio <span>Finance</span></div></div>
+  <div class="cw-pill" id="cwPill">CW —</div>
+</nav>
+
+<div class="page">
+  <div class="hero">
+    <h1>Friday<br><em>highlights</em></h1>
+    <p>Generate your weekly #finance Slack message — auto-scan all sources or paste your own bullets.</p>
+  </div>
+
+  <div class="modes">
+    <button class="mode on" id="mA" onclick="setMode('scan')">
+      <div class="mode-title">⚡ Auto-scan</div>
+      <div class="mode-desc">Claude pulls Gmail, Calendar & Notion automatically</div>
+    </button>
+    <button class="mode" id="mB" onclick="setMode('quick')">
+      <div class="mode-title">✏️ Quick format</div>
+      <div class="mode-desc">Paste your bullets → instant Slack draft</div>
+    </button>
+  </div>
+
+  <!-- AUTO SCAN PANEL -->
+  <div class="panel on" id="pScan">
+    <div class="srcs">
+      <div class="src"><span class="sd"></span>Gmail</div>
+      <div class="src"><span class="sd"></span>Google Calendar</div>
+      <div class="src"><span class="sd"></span>Notion</div>
+      <div class="src"><span class="sd"></span>Recent conversations</div>
+    </div>
+    <div class="note">
+      <strong>Requirements:</strong> you must be logged into <a href="https://claude.ai" target="_blank" style="color:var(--green)">claude.ai</a> and have Gmail, Google Calendar, and Notion connected under Settings → Integrations.
+    </div>
+    <div class="card">
+      <div class="ch"><div class="cd"></div> Options</div>
+      <div class="cb">
+        <div class="row2">
+          <div><label>Calendar week</label><input type="text" id="sCW" placeholder="e.g. 22"/></div>
+          <div><label>Tone</label>
+            <select id="sTone">
+              <option value="">Standard</option>
+              <option value="Keep it extra brief.">Extra brief</option>
+              <option value="Make it upbeat and energetic.">Upbeat</option>
+              <option value="It was a quiet week, keep it short.">Quiet week</option>
+              <option value="Highlight key wins clearly.">Highlight wins</option>
+            </select>
+          </div>
+        </div>
+        <div class="ir"><label>Extra context (optional)</label><input type="text" id="sExtra" placeholder="e.g. skip OKRs this week / highlight the audit win"/></div>
+        <button class="btn" id="scanBtn" onclick="runScan()"><span id="scanIco">⚡</span><span id="scanLbl">Scan all sources & generate</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUICK FORMAT PANEL -->
+  <div class="panel" id="pQuick">
+    <div class="card">
+      <div class="ch"><div class="cd"></div> Your highlights this week</div>
+      <div class="cb">
+        <div class="ir"><label>Raw bullets</label>
+          <textarea id="qBullets" placeholder="Paste anything — bullet points, topics, email subjects, meeting notes...
+
+e.g.
+- April close sent to MKB
+- Liftoff contract clarification
+- Google balance statement received
+- Slides automation done
+- Grantlift intro call June 2
+- OKR KR2 at 80%"></textarea>
+        </div>
+        <div class="row2">
+          <div><label>Calendar week</label><input type="text" id="qCW" placeholder="e.g. 22"/></div>
+          <div><label>Tone</label>
+            <select id="qTone">
+              <option value="">Standard</option>
+              <option value="Keep it extra brief.">Extra brief</option>
+              <option value="Make it upbeat and energetic.">Upbeat</option>
+              <option value="It was a quiet week, keep it short.">Quiet week</option>
+              <option value="Highlight key wins clearly.">Highlight wins</option>
+            </select>
+          </div>
+        </div>
+        <div class="ir"><label>Extra context (optional)</label><input type="text" id="qExtra" placeholder="e.g. highlight the audit win / skip OKRs"/></div>
+        <button class="btn" id="quickBtn" onclick="runQuick()"><span id="quickIco">✨</span><span id="quickLbl">Format into Slack message</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status -->
+  <div class="status" id="statusBar"><div class="pdot"></div><span id="statusTxt">Connecting...</span></div>
+
+  <!-- Output -->
+  <div class="out card" id="outCard">
+    <div class="ot">
+      <div class="ol"><div class="od"></div> Slack · #finance · ready to post</div>
+      <div class="btns">
+        <button class="sb" id="copyBtn" onclick="doCopy(this)">📋 Copy</button>
+        <button class="sb" onclick="doReset()">↺ Redo</button>
+      </div>
+    </div>
+    <div class="ob" id="outBody"></div>
+  </div>
+
+  <div class="err" id="errBox"></div>
+</div>
+
+<footer>
+  <p>Yazio Finance · Friday highlights · May 2026</p>
+  <p>Paste in Claude · Post to #finance</p>
+</footer>
+
+<script>
+const CW_URL = 'https://api.anthropic.com/v1/messages';
+const MCP = [
+  {type:'url',url:'https://gmailmcp.googleapis.com/mcp/v1',name:'gmail'},
+  {type:'url',url:'https://calendarmcp.googleapis.com/mcp/v1',name:'calendar'},
+  {type:'url',url:'https://mcp.notion.com/mcp',name:'notion'}
+];
+
+function isoWeek(d){
+  const dt=new Date(d);dt.setHours(0,0,0,0);
+  dt.setDate(dt.getDate()+3-(dt.getDay()+6)%7);
+  const w=new Date(dt.getFullYear(),0,4);
+  return 1+Math.round(((dt-w)/86400000-3+(w.getDay()+6)%7)/7);
+}
+const cw=isoWeek(new Date());
+document.getElementById('cwPill').textContent='CW '+cw;
+document.getElementById('sCW').value=cw;
+document.getElementById('qCW').value=cw;
+
+function weekRange(){
+  const now=new Date(),day=now.getDay();
+  const mon=new Date(now);mon.setDate(now.getDate()-(day===0?6:day-1));
+  const fri=new Date(mon);fri.setDate(mon.getDate()+4);
+  return {s:mon.toISOString().split('T')[0],e:fri.toISOString().split('T')[0]};
+}
+
+let mode='scan';
+function setMode(m){
+  mode=m;
+  document.getElementById('mA').classList.toggle('on',m==='scan');
+  document.getElementById('mB').classList.toggle('on',m==='quick');
+  document.getElementById('pScan').classList.toggle('on',m==='scan');
+  document.getElementById('pQuick').classList.toggle('on',m==='quick');
+  doReset();
+}
+
+function setLoad(btn,ico,lbl,on,orig){
+  btn.disabled=on;
+  const i=document.getElementById(ico),l=document.getElementById(lbl);
+  if(on){i.className='spinner';i.textContent='';l.textContent='Generating...';}
+  else{i.className='';i.textContent=orig;l.textContent=lbl==='scanLbl'?'Scan all sources & generate':'Format into Slack message';}
+}
+function showStatus(t){const b=document.getElementById('statusBar');b.classList.add('on');document.getElementById('statusTxt').textContent=t;}
+function hideStatus(){document.getElementById('statusBar').classList.remove('on');}
+function showErr(m){const e=document.getElementById('errBox');e.textContent='⚠ '+m;e.classList.add('on');}
+function hideErr(){document.getElementById('errBox').classList.remove('on');}
+
+const SYS=`You are a weekly highlights assistant for a Finance team member at Yazio GmbH (Berlin, nutrition app).
+Draft a concise, impactful Slack message for the #finance channel.
+
+FORMAT — use exactly:
+*📅 Weekly highlights · Finance · CW {CW}*
+
+Hi team :sunny: here are my highlights from this week:
+
+*[EMOJI] [Section title]*
+• [short punchy bullet — verb-led, max one line]
+
+[3–5 sections. Good names: Close & accounting, Banking & compliance, Automation & tooling, Vendor & tools, Handover, OKR check-in]
+
+*Next steps 🚀*
+• ...
+
+Thanks all — have a great weekend! :pray:
+
+Rules: sentence case only, max 20 bullets, bold section headers only, no filler words, OKR section max 2 bullets.
+Key people at Yazio Finance: Tobi (manager), Yasmin (Finance Accountant), Anke (external payroll), MKB/Marc Zimmermann (external accounting firm).`;
+
+async function callAPI(messages, withMCP){
+  const body={model:'claude-sonnet-4-20250514',max_tokens:1000,system:'',messages};
+  if(withMCP) body.mcp_servers=MCP;
+  const r=await fetch(CW_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  const d=await r.json();
+  if(!r.ok) throw new Error(d.error?.message||'API error ('+r.status+')');
+  return d.content.filter(b=>b.type==='text').map(b=>b.text).join('\n').trim();
+}
+
+async function runScan(){
+  hideErr();doReset(true);
+  const cwv=document.getElementById('sCW').value.trim()||cw;
+  const tone=document.getElementById('sTone').value;
+  const extra=document.getElementById('sExtra').value.trim();
+  const {s,e}=weekRange();
+  setLoad(document.getElementById('scanBtn'),'scanIco','scanLbl',true,'⚡');
+  showStatus('Connecting to Gmail, Calendar & Notion...');
+  const extras=[tone,extra].filter(Boolean).join(' ');
+  const sys=SYS.replace('{CW}',cwv)+(extras?'\nExtra instructions: '+extras:'');
+  const prompt=`Check my Gmail (last 7 days), Google Calendar (${s} to ${e}), and Notion for recent Finance updates, then draft my weekly highlights Slack message for CW ${cwv}.`;
+  try{
+    showStatus('Scanning sources & drafting...');
+    const text=await callAPI([{role:'user',content:prompt}],true);
+    if(!text) throw new Error('Empty response — try again.');
+    // override system via user message since body.system is set
+    // re-call with proper system
+    const r2=await fetch(CW_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      model:'claude-sonnet-4-20250514',max_tokens:1000,
+      system:sys,
+      messages:[{role:'user',content:prompt}],
+      mcp_servers:MCP
+    })});
+    const d2=await r2.json();
+    if(!r2.ok) throw new Error(d2.error?.message||'API error');
+    const out=d2.content.filter(b=>b.type==='text').map(b=>b.text).join('\n').trim();
+    if(!out) throw new Error('No content returned — try again.');
+    showResult(out);
+  }catch(e){hideStatus();showErr(e.message||'Something went wrong. Make sure you are logged into claude.ai and your integrations are connected.');}
+  setLoad(document.getElementById('scanBtn'),'scanIco','scanLbl',false,'⚡');
+  hideStatus();
+}
+
+async function runQuick(){
+  const bullets=document.getElementById('qBullets').value.trim();
+  if(!bullets){document.getElementById('qBullets').style.borderColor='#c05050';setTimeout(()=>document.getElementById('qBullets').style.borderColor='',1500);return;}
+  hideErr();doReset(true);
+  const cwv=document.getElementById('qCW').value.trim()||cw;
+  const tone=document.getElementById('qTone').value;
+  const extra=document.getElementById('qExtra').value.trim();
+  setLoad(document.getElementById('quickBtn'),'quickIco','quickLbl',true,'✨');
+  const extras=[tone,extra].filter(Boolean).join(' ');
+  const prompt=`Format these into my weekly Slack highlights for CW ${cwv}.${extras?' '+extras:''}\n\nMy highlights:\n${bullets}`;
+  const sys=SYS.replace('{CW}',cwv);
+  try{
+    const r=await fetch(CW_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      model:'claude-sonnet-4-20250514',max_tokens:900,system:sys,
+      messages:[{role:'user',content:prompt}]
+    })});
+    const d=await r.json();
+    if(!r.ok) throw new Error(d.error?.message||'API error');
+    const out=d.content.filter(b=>b.type==='text').map(b=>b.text).join('\n').trim();
+    if(!out) throw new Error('Empty response — try again.');
+    showResult(out);
+  }catch(e){showErr(e.message||'Something went wrong.');}
+  setLoad(document.getElementById('quickBtn'),'quickIco','quickLbl',false,'✨');
+}
+
+function showResult(text){
+  document.getElementById('outBody').textContent=text;
+  document.getElementById('outCard').classList.add('on');
+  document.getElementById('outCard').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function doCopy(btn){
+  navigator.clipboard.writeText(document.getElementById('outBody').textContent).then(()=>{
+    btn.textContent='✓ Copied!';btn.classList.add('ok');
+    setTimeout(()=>{btn.textContent='📋 Copy';btn.classList.remove('ok');},2200);
+  });
+}
+
+function doReset(soft){
+  document.getElementById('outCard').classList.remove('on');
+  hideErr();hideStatus();
+  if(!soft){
+    document.getElementById('scanBtn').disabled=false;
+    document.getElementById('quickBtn').disabled=false;
+  }
+}
+</script>
+</body>
+</html>
